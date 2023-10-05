@@ -37,9 +37,10 @@ public class AutoChooser {
         this.eventMap = eventMap;
         this.trajectories = trajectories;
         
-
-        m_chooser.setDefaultOption("Score Mobility Engage", AutonomousMode.kScoreMobilityEngage);
-        m_chooser.addOption("AutoDead???", AutonomousMode.autoDead);
+        //m_chooser.setDefaultOption("Score Mobility Engage", AutonomousMode.kScoreMobilityEngage);
+        m_chooser.setDefaultOption("AutoDead", AutonomousMode.autoDead);
+        //m_chooser.addOption("AutoDead???", AutonomousMode.autoDead);
+        m_chooser.addOption("Drive forward and back", AutonomousMode.kScoreMobilityEngage);
     }
 
     public SendableChooser<AutonomousMode> getAutoChooser() {
@@ -82,7 +83,8 @@ public class AutoChooser {
 
         SequentialCommandGroup command = new SequentialCommandGroup();
         command.addCommands(
-            //new SequentialCommandGroup(eventMap.get("scoreCubeHigh")),
+            
+        new SequentialCommandGroup(eventMap.get("scoreCubeHigh")),
             new InstantCommand(() -> {
                 PathPlannerTrajectory.PathPlannerState initialState = trajectories.scoreMobilityEngage().getInitialState();
                   initialState =
