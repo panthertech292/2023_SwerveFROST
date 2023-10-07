@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.AutoChooser;
@@ -36,6 +37,7 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
     /* Subsystems */
     public final Swerve s_Swerve = new Swerve();
+    public final ArmSubsystem s_ArmSubsystem = new ArmSubsystem();
     private final eventMap map = new eventMap(s_Swerve);
     private final AutoTrajectories trajectories = new AutoTrajectories();
     private final AutoChooser chooser = new AutoChooser(trajectories, map.getMap(), s_Swerve);
@@ -46,6 +48,7 @@ public class RobotContainer {
 
     /* Controllers */
     private final Joystick driver = new Joystick(0);
+    private final CommandXboxController operator = new CommandXboxController(1);
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -57,11 +60,17 @@ public class RobotContainer {
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton driver_AutoBalance = new JoystickButton(driver, XboxController.Button.kB.value);
 
+    //Arm Commands
+    //private final Command z_ArmRotateManual = new ArmRotateManual(s_ArmSubsystem, 0);
     /* Variables */
     boolean driveStatus = false;
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
+      s_ArmSubsystem.setDefaultCommand(
+        new ArmRotateManual(s_ArmSubsystem, 
+        () -> operator.getRawAxis(XboxController.Axis.kRightY.value)));
+
       s_Swerve.setDefaultCommand(
         new TeleopSwerve(
           s_Swerve, 

@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,9 +24,10 @@ public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
     public Pigeon2 gyro;
+    public DigitalInput limitSwitch;
 
     public Swerve() {
-        
+        limitSwitch = new DigitalInput(0);
         gyro = new Pigeon2(Constants.Swerve.pigeonID);
         
         gyro.configFactoryDefault();
@@ -123,6 +125,7 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic(){
+        SmartDashboard.putBoolean("Mag Limit Switch", !limitSwitch.get());
         swerveOdometry.update(getYaw(), getModulePositions());  
         SmartDashboard.putString("Robot Location: ", getPose().getTranslation().toString());
         SmartDashboard.putString("Yaw status", getYaw().toString());
