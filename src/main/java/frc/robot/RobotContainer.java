@@ -2,6 +2,7 @@ package frc.robot;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.pathplanner.lib.PathConstraints;
@@ -67,9 +68,7 @@ public class RobotContainer {
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
-      s_ArmSubsystem.setDefaultCommand(
-        new ArmRotateManual(s_ArmSubsystem, 
-        () -> operator.getRawAxis(XboxController.Axis.kRightY.value)));
+      s_ArmSubsystem.setDefaultCommand(new ArmRotateManual(s_ArmSubsystem, () -> operator.getRightY()));
 
       s_Swerve.setDefaultCommand(
         new TeleopSwerve(

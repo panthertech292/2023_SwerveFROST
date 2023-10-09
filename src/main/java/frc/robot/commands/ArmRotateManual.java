@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 
@@ -28,14 +29,13 @@ public class ArmRotateManual extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //ArmSub.setArmRotateMotor(armSpeed);
-    this.v_armSpeed = v_supArmSpeed.getAsDouble();
-    if (v_armSpeed > 0.10 || v_armSpeed < -0.10){ //Deadband TODO: Implement this somewhere else.
-      ArmSub.setArmRotateMotor(v_armSpeed);
+    if (v_supArmSpeed.getAsDouble() > 0.10 || v_supArmSpeed.getAsDouble() < -0.10){ //Deadband TODO: Implement this somewhere else.
+      this.v_armSpeed = v_supArmSpeed.getAsDouble();
     }else{
-      ArmSub.setArmRotateMotor(0);
+      this.v_armSpeed = 0;
     }
-    
+    SmartDashboard.putNumber("Arm Speed", v_armSpeed);
+    ArmSub.setArmRotateMotor(v_armSpeed);
   }
 
   // Called once the command ends or is interrupted.
